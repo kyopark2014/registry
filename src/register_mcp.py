@@ -21,7 +21,7 @@ from botocore.exceptions import ClientError
 # Allow `python3 src/register_mcp.py` from repo root.
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-import registry as reg  # noqa: E402
+import installer as reg  # noqa: E402
 
 HARNESS_WORK_ROOT = os.path.abspath(
     os.path.join(reg.PROJECT_ROOT, "..", "harness-work")

@@ -21,7 +21,7 @@ from botocore.exceptions import ClientError
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import register_mcp as mcp_reg  # noqa: E402
-import registry as reg  # noqa: E402
+import installer as reg  # noqa: E402
 
 RECORD_NAME = "harness-work"
 RECORD_DISPLAY_NAME = "Harness Agent (harness_work)"

@@ -19,7 +19,7 @@ from typing import Dict, List, Optional, Tuple
 import boto3
 
 # Configuration
-project_name = "registry"  # at least 3 characters
+project_name = "registry-harness"  # at least 3 characters
 region = "us-west-2"
 MIN_BOTO3_VERSION = "1.43.84"
 

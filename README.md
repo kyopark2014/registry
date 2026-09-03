@@ -152,7 +152,8 @@ registry/
 ├── application/
 │   └── config.json           # 생성 결과 (registry_id, mcp/agent record 등)
 └── src/
-    ├── registry.py           # Registry 생성 스크립트
+    ├── installer.py          # Registry 생성 (project_name=registry-harness)
+    ├── uninstaller.py        # Registry/레코드 삭제
     ├── register_mcp.py       # harness-work KB MCP 레코드 등록
     ├── register_agent.py     # harness_work Harness AGENT 레코드 등록
     ├── test_registry_mcp.py  # Registry 검색 → MCP retrieve E2E
@@ -183,18 +184,18 @@ pip install 'boto3>=1.43.84' 'botocore>=1.43.84'
 
 ### 0. 이 프로젝트에서 Registry 생성하기
 
-`project_name = "registry"` 기준으로 Agent Registry를 생성합니다. GA `agent-registry-control` 엔드포인트를 우선 사용하고, SDK가 구버전이면 preview로 fallback합니다.
+`project_name = "registry-harness"` 기준으로 Agent Registry를 생성합니다. GA `agent-registry-control` 엔드포인트를 우선 사용하고, SDK가 구버전이면 preview로 fallback합니다.
 
 ```bash
 pip install -r requirements.txt
-python3 src/registry.py
+python3 src/installer.py
 ```
 
 생성 결과는 `application/config.json`에 저장됩니다.
 
 | 설정 | 값 |
 |------|-----|
-| `projectName` / Registry Name | `registry` |
+| `projectName` / Registry Name | `registry-harness` |
 | Region | `us-west-2` |
 | Authorizer | `AWS_IAM` (`discoveryConfiguration`) |
 | Auto-approval | `APPROVE_ALL` |
@@ -227,7 +228,7 @@ python3 src/register_agent.py
 #### 등록 흐름 (`register_agent.py`)
 
 ```
-[1/3] Ensure Registry (registry.py / register_mcp._ensure_registry)
+[1/3] Ensure Registry (installer.py / register_mcp._ensure_registry)
          │
       GetHarness(harnessId) — status=READY 확인, live ARN 사용
          │
@@ -530,7 +531,7 @@ AgentCore Harness + LangGraph + MCP 아키텍처에서는 Registry를 `remote_mc
 ### 사전 조건
 
 1. `pip install -r requirements.txt` (boto3 ≥ 1.43.84) 및 `mcp`, `httpx`
-2. `python3 src/registry.py`로 GA Registry 생성 완료
+2. `python3 src/installer.py`로 GA Registry 생성 완료
 3. `python3 src/register_mcp.py`로 harness-work KB MCP 레코드 등록·승인 완료
 4. `application/config.json`에 `registry_id`, `kb_mcp_runtime_arn`, `kb_mcp_url` 등이 채워져 있음
 5. AWS 자격 증명에 Registry 검색 + (필요 시) Runtime `InvokeAgentRuntime` 권한
@@ -768,7 +769,7 @@ Fallback JSON 예 (일부):
 ### 사전 조건
 
 1. `pip install -r requirements.txt` (boto3 ≥ 1.43.84)
-2. `python3 src/registry.py`로 GA Registry 생성 완료
+2. `python3 src/installer.py`로 GA Registry 생성 완료
 3. `python3 src/register_agent.py`로 harness_work AGENT 레코드 등록·승인 완료
 4. `application/config.json`에 `registry_id`, `harness_agent_harness_arn` 등이 채워져 있음 (또는 `../harness-work/application/config.json`의 `HARNESS_ARN`)
 5. AWS 자격 증명에 Registry 검색 + `bedrock-agentcore:InvokeHarness` 권한
@@ -881,7 +882,8 @@ InvokeHarness completed (231 chars)
 | `src/test_registry_agent.py` | Harness AGENT Discovery → InvokeHarness E2E |
 | `src/register_mcp.py` | KB MCP 레코드를 Registry에 등록 |
 | `src/register_agent.py` | harness_work AGENT 레코드를 Registry에 등록 |
-| `src/registry.py` | Registry 생성 |
+| `src/installer.py` | Registry 생성 (`registry-harness`) |
+| `src/uninstaller.py` | Registry·레코드 삭제 |
 | `application/config.json` | 배포/등록 결과 |
 | `../harness-work/application/config.json` | Harness ARN / harnessId 소스 |
 
@@ -913,7 +915,7 @@ InvokeHarness completed (231 chars)
 | boto3 최소 버전 | ≥ 1.42.87 (preview API) | **≥ 1.43.84** |
 | **지원 종료일** | **2026년 9월 17일** | — |
 
-> Preview에서 만든 Registry는 GA 네임스페이스에 자동으로 나타나지 않습니다. GA로 전환하려면 `python3 src/registry.py`로 새 Registry를 생성하거나 [마이그레이션 가이드](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/registry-faq.html)를 따르세요.
+> Preview에서 만든 Registry는 GA 네임스페이스에 자동으로 나타나지 않습니다. GA로 전환하려면 `python3 src/installer.py`로 새 Registry를 생성하거나 [마이그레이션 가이드](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/registry-faq.html)를 따르세요.
 
 ---
 
