@@ -7,7 +7,7 @@ AWS Agent Registry(AgentCore Registry)는 조직 내 AI 에이전트, MCP 서버
 > **비용**: 사용량 기반 + 월 Free Tier — 자세한 내용은 [비용 (Pricing)](#비용-pricing) 참고
 
 
-## AgentCore Registry란?
+## Agent Registry란?
 
 ### 왜 필요한가?
 
