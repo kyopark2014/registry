@@ -1,4 +1,4 @@
-# AgentCore Registry 활용하기
+# AWS Agent Registry 활용하기
 
 AWS Agent Registry(AgentCore Registry)는 조직 내 AI 에이전트, MCP 서버, 툴, 스킬, 커스텀 리소스를 중앙에서 등록·관리·탐색할 수 있는 완전 관리형 디스커버리 서비스입니다.
 
