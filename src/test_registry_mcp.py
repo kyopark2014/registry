@@ -29,7 +29,8 @@ import httpx
 from botocore.auth import SigV4Auth as BotocoreSigV4Auth
 from botocore.awsrequest import AWSRequest
 from mcp import ClientSession
-from mcp.client.streamable_http import streamablehttp_client
+from mcp.client.streamable_http import streamable_http_client
+from mcp.shared._httpx_utils import create_mcp_http_client
 
 WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(WORKING_DIR)
@@ -292,7 +293,7 @@ async def call_retrieve(
     keyword: str,
     actor_id: str,
 ) -> str:
-    async with streamablehttp_client(mcp_url) as streams:
+    async with streamable_http_client(mcp_url) as streams:
         # mcp>=1.x may return (read, write) or (read, write, get_session_id)
         if len(streams) == 2:
             read, write = streams
